@@ -1,0 +1,40 @@
+{% extends 'layout' %}
+
+{% set pageTitle = 'Login page' %}
+
+{% block content %}
+    <div class="flex-center position-ref full-height">
+        {% if route_has('login') %}
+            <div class="top-right links">
+                {% if auth_user() %}
+                    <a href="{{ url('/home') }}">Home</a>
+                {% else %}
+                    <a href="{{ route('login') }}">Login</a>
+
+                    {% if route_has('register') %}
+                        <a href="{{ route('register') }}">Register</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <div class="content">
+            <div class="title m-b-md">
+                Hey user, welcome back!
+            </div>
+
+            {{ form_open() }}
+                <label>
+                    Login:
+                    <input type="text" name="login">
+                </label>
+                <label>
+                    Password:
+                    <input type="password" name="password">
+                </label>
+
+                <button>Submit</button>
+            {{ form_close() }}
+        </div>
+    </div>
+{% endblock %}
