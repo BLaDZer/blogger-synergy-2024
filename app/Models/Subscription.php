@@ -6,7 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subscription extends Model
 {
-    public $subscriber;
+    const CREATED_AT = null;
+    const UPDATED_AT = null;
+
+    protected $fillable = ['user_id', 'subscriber_id'];
 
     public function subscriber()
     {

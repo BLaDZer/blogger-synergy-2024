@@ -13,27 +13,29 @@ class Post extends Model
     /**
      * @var string
      */
-    public $title;
-
-    /**
-     * @var string
-     */
-    public $body;
+    private $message;
 
     /**
      * @var bool
      */
-    public $is_hidden = false;
+    private $is_hidden = false;
 
     /**
      * @var DateTimeImmutable
      */
-    public $created_at;
+    private $created_at;
 
     /**
      * @var DateTimeImmutable|null
      */
-    public $updated_at = null;
+    private $updated_at = null;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['message', 'is_hidden'];
 
     /**
      * The "booted" method of the model.
@@ -48,12 +50,11 @@ class Post extends Model
     }
 
     /**
-     * @return Builder
+     * @return bool
      */
-    public static function public()
+    public function isOwner(User $user)
     {
-        // magic call
-        return parent::public();
+        return $this->user_id === $user->id;
     }
 
     /**

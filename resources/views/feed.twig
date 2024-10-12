@@ -1,0 +1,31 @@
+{% extends 'layouts/app' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center mb-3">
+            <div class="col-md-8">
+                <a href="{{ route('posts.new.form') }}" class="btn btn-secondary">{{ __('Create a post') }}</a>
+            </div>
+        </div>
+
+        {% if posts|length > 0 %}
+            <div class="row justify-content-center mb-1" style="text-align: right;">
+                <div class="col-md-8">
+                    <a href="?order=old">Old first</a>
+                    <a href="?order=new">New first</a>
+                </div>
+            </div>
+
+            {% include('posts/partial/posts_container') %}
+        {% else %}
+            <div class="row justify-content-center mb-3">
+                <div class="col-md-8">
+                    {{ __('Nothing to show... ') }}
+                    <a href="{{ route('posts.new.form') }}">{{ __('Create a post') }}</a>
+                    or add more
+                    <a href="{{ route('user.list') }}">{{ __('friends') }}</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

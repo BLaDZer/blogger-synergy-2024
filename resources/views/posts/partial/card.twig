@@ -1,0 +1,28 @@
+{% set user_is_post_owner = user.id == post.user.id %}
+
+<div class="row justify-content-center mb-2">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                {% if user_is_post_owner %}
+                    <div class="card-title text-muted">{{ __('You') }}</div>
+                {% else %}
+                    <div class="card-title">
+                        <a href="{{ route('user.profile', {'user_id': post.user.id}) }}">{{ post.user.name }}</a>
+                    </div>
+                {% endif %}
+
+                <div class="card-subtitle mb-3">
+                    <a class="text-muted" href="{{ route('posts.view', {'post_id': post.id}) }}" style="cursor: pointer;">{{ post.created_at|date('d.m.Y H:i') }}</a>
+                </div>
+
+                <p class="card-text">{{ post.message }}</p>
+
+                {% if user_is_post_owner %}
+                    <a href="{{ route('posts.edit.form', {'post_id': post.id}) }}" class="card-link">{{ __('Edit') }}</a>
+                    <a href="{{ route('posts.remove', {'post_id': post.id}) }}" class="card-link">{{ __('Remove') }}</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

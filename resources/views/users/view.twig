@@ -1,0 +1,45 @@
+{% extends 'layouts/app' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center mb-3">
+            <div class="col-md-8">
+                {% if user.id == current_user.id %}
+                    <a href="{{ route('posts.new.form') }}" class="btn btn-secondary">{{ __('Create a post') }}</a>
+                {% else %}
+                    {% if is_subscribed %}
+                        <a href="{{ route('user.unsubscribe', {'user_id': user.id}) }}" class="btn btn-secondary">{{ __('Unsubscribe') }}</a>
+                    {% else %}
+                        <a href="{{ route('user.subscribe', {'user_id': user.id}) }}" class="btn btn-secondary">{{ __('Subscribe') }}</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+
+        {% if user.id == current_user.id %}
+            {% if posts|length > 0 %}
+                {% include('posts/partial/posts_container') with {'user': current_user} %}
+            {% else %}
+                <div class="row justify-content-center mb-3">
+                    <div class="col-md-8">
+                        {{ __('Nothing to show... ') }}
+                        <a href="{{ route('posts.new.form') }}">{{ __('Create a post') }}</a>
+                    </div>
+                </div>
+            {% endif %}
+        {% else %}
+            {% if posts|length > 0 %}
+                {% include('posts/partial/posts_container') with {'user': current_user} %}
+            {% else %}
+                <div class="row justify-content-center mb-3">
+                    <div class="col-md-8">
+                        {{ __('Nothing to show... ') }}
+                        <a href="{{ route('posts.new.form') }}">{{ __('Create a post') }}</a>
+                        or add more
+                        <a href="{{ route('user.list') }}">{{ __('friends') }}</a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}
