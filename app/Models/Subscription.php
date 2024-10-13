@@ -4,6 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ * @property int $subscriber_id
+ * @property int $user_id
+ */
 class Subscription extends Model
 {
     const CREATED_AT = null;

@@ -2,6 +2,12 @@
 
 {% block content %}
     <div class="container">
+        <div class="row justify-content-center mb-3">
+            <div class="col-md-8">
+                <h1>{{ __('user.user_list_title') }}</h1>
+            </div>
+        </div>
+
         {% set current_user = user %}
 
         <div class="row justify-content-center">
@@ -10,20 +16,24 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="card-title">
-                                {{ __('auth.name') }}:
+                                {{ __('user.card_name_title') }}:
                                 <a href="{{ route('user.profile', {'user_id': user.id}) }}">{{ user.name }}</a>
                             </div>
 
                             <div class="card-subtitle text-muted">
-                                {{ __('Registered at:') }} {{ user.created_at|date('d.m.Y H:i') }}
+                                {{ __('user.card_registered_at') }}: {{ user.created_at|date('d.m.Y H:i') }}
+                            </div>
+
+                            <div class="card-subtitle text-muted">
+                                {{ __('user.card_posts_amount') }}: {{ user.posts|length }}
                             </div>
                         </div>
 
                         <div class="card-footer">
                             {% if subscriptions.contains('user_id', user.id) %}
-                                <a href="{{ route('user.unsubscribe', {'user_id': user.id}) }}" class="btn btn-secondary">{{ __('Unsubscribe') }}</a>
+                                <a href="{{ route('user.unsubscribe', {'user_id': user.id}) }}" class="btn btn-secondary">{{ __('user.unsubscribe_button') }}</a>
                             {% else %}
-                                <a href="{{ route('user.subscribe', {'user_id': user.id}) }}" class="btn btn-secondary">{{ __('Subscribe') }}</a>
+                                <a href="{{ route('user.subscribe', {'user_id': user.id}) }}" class="btn btn-secondary">{{ __('user.subscribe_button') }}</a>
                             {% endif %}
                         </div>
                     </div>

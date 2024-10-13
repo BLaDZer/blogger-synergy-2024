@@ -4,44 +4,37 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-class PostController extends Controller
+class PostController extends AbstractUserAuthorizedController
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function create(Request $request)
     {
         /** @var User $user */
         $user = Auth()->user();
 
-        $user->posts()
+        $post = $user->posts()
             ->create([
                 'message' => $request->post('message'),
-                'is_hidden' => $request->post('is_hidden', false),
+                'is_hidden' => (bool) $request->post('is_hidden', false),
             ]);
+
+        if ($request->post('tags')) {
+            $tags = explode(' ', $request->post('tags'));
+
+            $post->addTags($tags);
+        }
 
         return redirect()->route('user.profile', ['user_id' => $user]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function showCreateForm()
     {
@@ -49,23 +42,11 @@ class PostController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function view(int $post_id)
     {
+        /** @var Post $post */
         $post = Post::findOrFail($post_id);
 
         /** @var User $user */
@@ -75,9 +56,7 @@ class PostController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function showEditForm(int $post_id)
     {
@@ -95,11 +74,7 @@ class PostController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param Post $post
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function update(Request $request, int $post_id)
     {
@@ -115,16 +90,14 @@ class PostController extends Controller
 
         $post->update([
             'message' => $request->post('message'),
-            'is_hidden' => $request->post('is_hidden', false),
+            'is_hidden' => (bool) $request->post('is_hidden', false),
         ]);
 
         return redirect()->route('user.profile', ['user_id' => $user]);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function destroy(int $post_id)
     {

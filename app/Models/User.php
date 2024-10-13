@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $created_at
+ * @property string $updated_at
+ */
 class User extends Authenticatable
 {
     use Notifiable;
@@ -48,16 +54,18 @@ class User extends Authenticatable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function feedPosts()
     {
         return Post::with(['user'])
-            ->whereIn(
-                'user_id',
-                $this->subscribedToUsers()->select('users.id')
-            )
-            ->orWhere('user_id', $this->id);
+            ->where(function ($query) {
+                $query->whereIn(
+                    'user_id',
+                    $this->subscribedToUsers()->select('users.id')
+                )
+                    ->orWhere('user_id', $this->id);
+            });
     }
 
     /**
@@ -73,14 +81,6 @@ class User extends Authenticatable
             null,
             'user_id'
         );
-    }
-
-    /**
-     * @return HasManyThrough|User[]
-     */
-    public function subscribedPosts()
-    {
-        return $this->hasManyThrough(Post::class, Subscription::class);
     }
 
     /**
@@ -108,7 +108,7 @@ class User extends Authenticatable
     public function unsubscribeFrom(self $user)
     {
         $this->subscriptions()
-            ->where('user_id', $user->id)
+            ->where('user_id', '=', $user->id)
             ->delete();
 
         return $this;
@@ -120,7 +120,7 @@ class User extends Authenticatable
     public function isSubscribedTo(self $user)
     {
         return $this->subscriptions()
-            ->where('user_id', $user->id)
+            ->where('user_id', '=', $user->id)
             ->exists();
     }
 }

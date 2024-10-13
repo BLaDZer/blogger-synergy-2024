@@ -27,6 +27,6 @@ return [
     'reset_password' => 'Восстановление пароля',
     'reset_password_button' => 'Восстановить',
     'failed' => 'Учетная запись не найдена.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'throttle' => 'Слишком много попыток входа. Попробуйте через :seconds секунд.',
 
 ];

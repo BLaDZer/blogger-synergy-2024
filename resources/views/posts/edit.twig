@@ -5,14 +5,14 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Edit post') }}</div>
+                    <div class="card-header">{{ __('post.edit_form_title') }}</div>
 
                     <div class="card-body">
                         <form method="POST" action="{{ route('posts.edit', {'post_id': post.id}) }}">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
 
                             <div class="form-group">
-                                <label for="message" class="col-md-4 col-form-label">{{ __('Message') }}</label>
+                                <label for="message" class="col-md-4 col-form-label">{{ __('post.form_message_title') }}</label>
 
                                 <div class="col-md-8">
                                     <textarea id="message" class="form-control form-control-lg" name="message" required autofocus>{{ post.message }}</textarea>
@@ -25,7 +25,7 @@
                                         <input class="form-check-input" type="checkbox" value="1" {% if post.is_hidden %}checked{% endif %} id="is_hidden" name="is_hidden">
 
                                         <label class="form-check-label" for="is_hidden">
-                                            {{ __('Content is visible after request') }}
+                                            {{ __('post.form_for_subscribers_only_title') }}
                                         </label>
                                     </div>
                                 </div>
@@ -34,7 +34,7 @@
                             <div class="form-group mb-0">
                                 <div class="col-md-4">
                                     <button type="submit" class="btn btn-primary">
-                                        {{ __('Save') }}
+                                        {{ __('post.edit_form_save_button') }}
                                     </button>
                                 </div>
                             </div>

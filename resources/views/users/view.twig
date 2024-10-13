@@ -5,41 +5,30 @@
         <div class="row justify-content-center mb-3">
             <div class="col-md-8">
                 {% if user.id == current_user.id %}
-                    <a href="{{ route('posts.new.form') }}" class="btn btn-secondary">{{ __('Create a post') }}</a>
+                    <a href="{{ route('posts.new.form') }}" class="btn btn-secondary">{{ __('post.create_button') }}</a>
                 {% else %}
                     {% if is_subscribed %}
-                        <a href="{{ route('user.unsubscribe', {'user_id': user.id}) }}" class="btn btn-secondary">{{ __('Unsubscribe') }}</a>
+                        <a href="{{ route('user.unsubscribe', {'user_id': user.id}) }}" class="btn btn-secondary">{{ __('user.unsubscribe_button') }}</a>
                     {% else %}
-                        <a href="{{ route('user.subscribe', {'user_id': user.id}) }}" class="btn btn-secondary">{{ __('Subscribe') }}</a>
+                        <a href="{{ route('user.subscribe', {'user_id': user.id}) }}" class="btn btn-secondary">{{ __('user.subscribe_button') }}</a>
                     {% endif %}
                 {% endif %}
             </div>
         </div>
 
-        {% if user.id == current_user.id %}
-            {% if posts|length > 0 %}
-                {% include('posts/partial/posts_container') with {'user': current_user} %}
-            {% else %}
-                <div class="row justify-content-center mb-3">
-                    <div class="col-md-8">
-                        {{ __('Nothing to show... ') }}
-                        <a href="{{ route('posts.new.form') }}">{{ __('Create a post') }}</a>
-                    </div>
-                </div>
-            {% endif %}
+        {% if posts|length > 0 %}
+            {% include('posts/partial/posts_container') with {'user': current_user} %}
         {% else %}
-            {% if posts|length > 0 %}
-                {% include('posts/partial/posts_container') with {'user': current_user} %}
-            {% else %}
-                <div class="row justify-content-center mb-3">
-                    <div class="col-md-8">
-                        {{ __('Nothing to show... ') }}
-                        <a href="{{ route('posts.new.form') }}">{{ __('Create a post') }}</a>
-                        or add more
-                        <a href="{{ route('user.list') }}">{{ __('friends') }}</a>
-                    </div>
+            <div class="row justify-content-center mb-3">
+                <div class="col-md-8">
+                    {{ __('post.nothing_to_show') }}
+                    <a href="{{ route('posts.new.form') }}">{{ __('post.create_button') }}</a>
+                    {% if user.id == current_user.id %}
+                        {{ __('user.subscribe_add_more') }}
+                        <a href="{{ route('user.list') }}">{{ __('user.subscribe_for_friends') }}</a>
+                    {% endif %}
                 </div>
-            {% endif %}
+            </div>
         {% endif %}
     </div>
 {% endblock %}

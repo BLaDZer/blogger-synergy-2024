@@ -2,25 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use App\Models\User;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 
-class FeedController extends Controller
+class FeedController extends AbstractUserAuthorizedController
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function index(Request $request)
     {
@@ -31,6 +21,12 @@ class FeedController extends Controller
 
         $posts = $user->feedPosts()
             ->orderBy('created_at', $order_old_first ? 'ASC' : 'DESC');
+
+        $filter_tag_id = $request->get('tag');
+
+        if ($filter_tag_id) {
+            $posts = Post::addTagIdFilterToQuery($posts, $filter_tag_id);
+        }
 
         return view('feed', ['user' => $user, 'posts' => $posts->get()]);
     }

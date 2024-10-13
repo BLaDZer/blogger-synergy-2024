@@ -4,15 +4,21 @@
     <div class="container">
         <div class="row justify-content-center mb-3">
             <div class="col-md-8">
-                <a href="{{ route('posts.new.form') }}" class="btn btn-secondary">{{ __('Create a post') }}</a>
+                <h1>{{ __('post.feed_title') }}</h1>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mb-3">
+            <div class="col-md-8">
+                <a href="{{ route('posts.new.form') }}" class="btn btn-secondary">{{ __('post.create_button') }}</a>
             </div>
         </div>
 
         {% if posts|length > 0 %}
             <div class="row justify-content-center mb-1" style="text-align: right;">
                 <div class="col-md-8">
-                    <a href="?order=old">Old first</a>
-                    <a href="?order=new">New first</a>
+                    <a href="?order=old">{{ __('post.sort_order_old') }}</a>
+                    <a href="?order=new">{{ __('post.sort_order_new') }}</a>
                 </div>
             </div>
 
@@ -20,10 +26,10 @@
         {% else %}
             <div class="row justify-content-center mb-3">
                 <div class="col-md-8">
-                    {{ __('Nothing to show... ') }}
-                    <a href="{{ route('posts.new.form') }}">{{ __('Create a post') }}</a>
-                    or add more
-                    <a href="{{ route('user.list') }}">{{ __('friends') }}</a>
+                    {{ __('post.nothing_to_show') }}
+                    <a href="{{ route('posts.new.form') }}">{{ __('post.create_button') }}</a>
+                    {{ __('user.subscribe_add_more') }}
+                    <a href="{{ route('user.list') }}">{{ __('user.subscribe_for_friends') }}</a>
                 </div>
             </div>
         {% endif %}

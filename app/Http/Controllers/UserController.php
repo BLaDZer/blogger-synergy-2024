@@ -3,16 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use App\Models\Subscription;
 use App\Models\User;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class UserController extends AbstractUserAuthorizedController
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function index()
     {
@@ -32,39 +30,24 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return Renderable
      */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function view(int $user_id)
+    public function view(Request $request, int $user_id)
     {
         /** @var User $user */
         $user = Auth()->user();
+
+        /** @var User $viewing_user */
         $viewing_user = User::findOrFail($user_id);
 
         $user_posts = $viewing_user->posts()
             ->orderBy('created_at', 'DESC');
+
+        $filter_tag_id = $request->get('tag');
+
+        if ($filter_tag_id) {
+            $user_posts = Post::addTagIdFilterToQuery($user_posts, $filter_tag_id);
+        }
 
         return view(
             'users.view',
@@ -75,67 +58,5 @@ class UserController extends Controller
                 'posts' => $user_posts->get(),
             ]
         );
-    }
-
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function subscribe(int $user_id)
-    {
-        /** @var User $user */
-        $user = Auth()->user();
-        $subscribe_to_user = User::findOrFail($user_id);
-
-        $user->subscribeTo($subscribe_to_user);
-
-        return redirect()->back();
-    }
-
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function unsubscribe(int $user_id)
-    {
-        /** @var User $user */
-        $user = Auth()->user();
-        $unsubscribe_from_user = User::findOrFail($user_id);
-
-        $user->unsubscribeFrom($unsubscribe_from_user);
-
-        return redirect()->back();
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Post $post
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Post $post)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param Post $post
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Post $post)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Post $post
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Post $post)
-    {
-        //
     }
 }
