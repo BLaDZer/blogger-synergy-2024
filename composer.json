@@ -15,6 +15,7 @@
         "laravel/framework": "^7.29",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^2.5",
+        "laravelcollective/html": "^6.4",
         "rcrowe/twigbridge": "^0.14.1"
     },
     "require-dev": {
