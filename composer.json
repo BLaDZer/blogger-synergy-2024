@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
+    "name": "bladzer/blogger-synergy-2024",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "Blogger site demo on laravel framework.",
     "keywords": [
         "framework",
         "laravel"
@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5|^8.0",
+        "ext-pdo": "*",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3.1|^7.0.1",
