@@ -1,0 +1,7 @@
+{% extends 'layouts/app' %}
+
+{% block content %}
+    <div class="container">
+        {% include('posts/partial/card') with {'with_comments': true} %}
+    </div>
+{% endblock %}

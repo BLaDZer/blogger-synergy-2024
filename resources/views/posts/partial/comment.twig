@@ -1,0 +1,13 @@
+{% set user_is_comment_owner = user.id == comment.user.id %}
+
+<div class="card mb-2">
+    <div class="card-body">
+        <div class="card-title">
+            <a href="{{ route('user.profile', {'user_id': comment.user.id}) }}">{{ comment.user.name }}</a>
+        </div>
+
+        <p class="card-text">{{ comment.message }}</p>
+
+        <div class="text-muted">{{ comment.created_at|date('d.m.Y H:i') }}</div>
+    </div>
+</div>

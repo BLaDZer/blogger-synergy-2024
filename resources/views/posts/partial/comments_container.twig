@@ -1,0 +1,5 @@
+<div class="post-comments-container">
+    {% for comment in post.comments %}
+        {% include('posts/partial/comment') %}
+    {% endfor %}
+</div>
